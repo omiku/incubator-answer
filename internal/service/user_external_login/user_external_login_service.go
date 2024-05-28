@@ -201,6 +201,7 @@ func (us *UserExternalLoginService) registerNewUser(ctx context.Context,
 		userInfo.Avatar = string(avatar)
 	}
 
+	userInfo.Rank = externalUserInfo.Rank
 	userInfo.MailStatus = entity.EmailStatusToBeVerified
 	userInfo.Status = entity.UserStatusAvailable
 	userInfo.LastLoginDate = time.Now()
