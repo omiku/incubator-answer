@@ -157,6 +157,7 @@ func (us *UserCenterLoginService) registerNewUser(ctx context.Context, provider 
 		userInfo.Avatar = string(avatar)
 	}
 
+	userInfo.Rank = externalUserInfo.Rank
 	userInfo.MailStatus = entity.EmailStatusAvailable
 	userInfo.Status = entity.UserStatusAvailable
 	userInfo.LastLoginDate = time.Now()

@@ -59,7 +59,7 @@ type ExternalLoginUserInfo struct {
 	Avatar string
 	// optional. The original user information provided by the third-party login platform
 	MetaInfo string
-
+	// optional. mir3 ask 
 	Rank int
 }
 

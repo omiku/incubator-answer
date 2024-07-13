@@ -73,7 +73,7 @@ type ExternalLoginUserInfoCache struct {
 	MetaInfo string
 	// optional. The bio provided by the third-party login platform
 	Bio string
-
+	// optional. mir3 ask
 	Rank int
 }
 

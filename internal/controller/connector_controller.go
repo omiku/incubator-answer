@@ -140,7 +140,7 @@ func (cc *ConnectorController) ConnectorRedirect(connector plugin.Connector) (fn
 			Email:       userInfo.Email,
 			Avatar:      userInfo.Avatar,
 			MetaInfo:    userInfo.MetaInfo,
-			Rank: userInfo.Rank,
+			Rank:        userInfo.Rank,
 		}
 		resp, err := cc.userExternalService.ExternalLogin(ctx, u)
 		if err != nil {
