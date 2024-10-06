@@ -49,6 +49,10 @@ var (
 	upgradeVersion string
 	// The fields that need to be set to the default value
 	configFields []string
+	// i18nSourcePath i18n from path
+	i18nSourcePath string
+	// i18nTargetPath i18n to path
+	i18nTargetPath string
 )
 
 func init() {
@@ -68,7 +72,11 @@ func init() {
 
 	configCmd.Flags().StringSliceVarP(&configFields, "with", "w", []string{}, "the fields that need to be set to the default value, eg: -w allow_password_login")
 
-	for _, cmd := range []*cobra.Command{initCmd, checkCmd, runCmd, dumpCmd, upgradeCmd, buildCmd, pluginCmd, configCmd} {
+	i18nCmd.Flags().StringVarP(&i18nSourcePath, "source", "s", "", "i18n source path, eg: -f ./i18n/source")
+
+	i18nCmd.Flags().StringVarP(&i18nTargetPath, "target", "t", "", "i18n target path, eg: -t ./i18n/target")
+
+	for _, cmd := range []*cobra.Command{initCmd, checkCmd, runCmd, dumpCmd, upgradeCmd, buildCmd, pluginCmd, configCmd, i18nCmd} {
 		rootCmd.AddCommand(cmd)
 	}
 }
@@ -255,12 +263,17 @@ To run answer, use:
 			}
 
 			field := &cli.ConfigField{}
-			for _, f := range configFields {
-				switch f {
+			fmt.Println(configFields)
+			if len(configFields) > 0 {
+				switch configFields[0] {
 				case "allow_password_login":
 					field.AllowPasswordLogin = true
+				case "deactivate_plugin":
+					if len(configFields) > 1 {
+						field.DeactivatePluginSlugName = configFields[1]
+					}
 				default:
-					fmt.Printf("field %s not support\n", f)
+					fmt.Printf("field %s not support\n", configFields[0])
 				}
 			}
 			err = cli.SetDefaultConfig(c.Data.Database, c.Data.Cache, field)
@@ -268,6 +281,28 @@ To run answer, use:
 				fmt.Println("set default config failed: ", err.Error())
 			} else {
 				fmt.Println("set default config successfully")
+			}
+		},
+	}
+
+	// i18nCmd used to merge i18n files
+	i18nCmd = &cobra.Command{
+		Use:   "i18n",
+		Short: "overwrite i18n files",
+		Long:  `Merge i18n files from plugins to original i18n files. It will overwrite the original i18n files`,
+		Run: func(_ *cobra.Command, _ []string) {
+			if err := cli.ReplaceI18nFilesLocal(i18nTargetPath); err != nil {
+				fmt.Printf("replace i18n files failed %v", err)
+			} else {
+				fmt.Printf("replace i18n files successfully\n")
+			}
+
+			fmt.Printf("try to merge i18n files from %q to %q\n", i18nSourcePath, i18nTargetPath)
+
+			if err := cli.MergeI18nFilesLocal(i18nTargetPath, i18nSourcePath); err != nil {
+				fmt.Printf("merge i18n files failed %v", err)
+			} else {
+				fmt.Printf("merge i18n files successfully\n")
 			}
 		},
 	}

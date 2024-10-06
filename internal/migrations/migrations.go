@@ -96,6 +96,8 @@ var migrations = []Migration{
 	NewMigration("v1.2.1", "add password login control", addPasswordLoginControl, true),
 	NewMigration("v1.2.5", "add notification plugin and theme config", addNotificationPluginAndThemeConfig, true),
 	NewMigration("v1.3.0", "add review", addReview, false),
+	NewMigration("v1.3.6", "add hot score to question table", addQuestionHotScore, true),
+	NewMigration("v1.4.0", "add badge/badge_group/badge_award table", addBadges, true),
 }
 
 func GetMigrations() []Migration {

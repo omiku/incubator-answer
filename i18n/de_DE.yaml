@@ -138,13 +138,15 @@ backend:
   pass:
     other: Passwort
   original_text:
-    other: This post
+    other: Dieser Beitrag
   email_or_password_wrong_error:
     other: E-Mail und Passwort stimmen nicht überein.
   error:
     common:
       invalid_url:
         other: Ungültige URL.
+      status_invalid:
+        other: Invalid status.
     password:
       space_invalid:
         other: Passwort darf keine Leerzeichen enthalten.
@@ -152,7 +154,7 @@ backend:
       cannot_update_their_password:
         other: Du kannst dein Passwort nicht ändern.
       cannot_edit_their_profile:
-        other: You cannot modify your profile.
+        other: Du kannst dein Profil nicht bearbeiten.
       cannot_modify_self_status:
         other: Du kannst deinen Status nicht ändern.
       email_or_password_wrong:
@@ -205,10 +207,10 @@ backend:
       new_password_same_as_previous_setting:
         other: Das neue Passwort ist das gleiche wie das vorherige Passwort.
       already_deleted:
-        other: This post has been deleted.
+        other: Dieser Beitrag wurde gelöscht.
     meta:
       object_not_found:
-        other: Meta object not found
+        other: Metaobjekt nicht gefunden
     question:
       already_deleted:
         other: Dieser Beitrag wurde gelöscht.
@@ -311,6 +313,9 @@ backend:
     site_info:
       config_not_found:
         other: Seiten-Konfiguration nicht gefunden.
+    badge:
+      object_not_found:
+        other: Badge object not found
   reason:
     spam:
       name:
@@ -322,8 +327,8 @@ backend:
         other: unhöflich oder beleidigend
       desc:
         other:
-          - A reasonable person would find this content inappropriate for respectful
-          - discourse.
+          - Eine vernünftige Person würde diesen Inhalt als unangemessen für einen respektvollen
+          - Umgang empfinden
     a_duplicate:
       name:
         other: ein Duplikat
@@ -336,9 +341,9 @@ backend:
         other: keine Antwort
       desc:
         other:
-          - This was posted as an answer, but it does not attempt to answer the
-          - question. It should possibly be an edit, a comment, another question,
-          - or deleted altogether.
+          - Dies wurde als Antwort gepostet, aber es wird nicht versucht, die
+          - Frage zu beantworten. Es sollte vielleicht eine Bearbeitung, ein Kommentar oder eine andere Frage sein,
+          - oder ganz gelöscht.
     no_longer_needed:
       name:
         other: nicht mehr benötigt
@@ -398,8 +403,8 @@ backend:
           other: benötigt Details oder Klarheit
         desc:
           other:
-            - This question currently includes multiple questions in one. It should
-            - focus on one problem only.
+            - Diese Frage enthält derzeit mehrere Fragen in einer. Sie sollte
+            - auf ein einziges Problem konzentrieren.
       other:
         name:
           other: etwas anderes
@@ -414,6 +419,13 @@ backend:
         other: geändert
     deleted_title:
       other: Gelöschte Frage
+    questions_title:
+      other: Fragen
+  tag:
+    tags_title:
+      other: Schlagwörter
+    no_description:
+      other: Diese Kategorie hat keine Beschreibung.
   notification:
     action:
       update_question:
@@ -452,6 +464,8 @@ backend:
         other: positiv bewerteter Kommentar
       invited_you_to_answer:
         other: hat dich eingeladen, zu antworten
+      earned_badge:
+        other: You've earned the "{{.BadgeName}}" badge
   email_tpl:
     change_email:
       title:
@@ -510,7 +524,7 @@ backend:
       other: bearbeiten
   review:
     queued_post:
-      other: Queued post
+      other: Post in der Warteschlange
     flagged_post:
       other: Beiträge gemeldet
     suggested_post_edit:
@@ -518,6 +532,263 @@ backend:
   reaction:
     tooltip:
       other: "{{ .Names }} and {{ .Count }} more..."
+  badge:
+    default_badges:
+      autobiographer:
+        name:
+          other: Autobiographer
+        desc:
+          other: Filled out <a href="{{ .ProfileURL }}" target="_blank">profile</a> information.
+      certified:
+        name:
+          other: Certified
+        desc:
+          other: Completed our new user tutorial.
+      editor:
+        name:
+          other: Editor
+        desc:
+          other: First post edit.
+      first_flag:
+        name:
+          other: First Flag
+        desc:
+          other: First flagged a post.
+      first_upvote:
+        name:
+          other: First Upvote
+        desc:
+          other: First up voted a post.
+      first_link:
+        name:
+          other: First Link
+        desc:
+          other: First dirst added a link to another post.
+      first_reaction:
+        name:
+          other: First Reaction
+        desc:
+          other: First reacted to the post.
+      first_share:
+        name:
+          other: First Share
+        desc:
+          other: First shared a post.
+      scholar:
+        name:
+          other: Scholar
+        desc:
+          other: Asked a question and accepted an answer.
+      commentator:
+        name:
+          other: Commentator
+        desc:
+          other: Leave 5 comments.
+      new_user_of_the_month:
+        name:
+          other: New User of the Month
+        desc:
+          other: Outstanding contributions in their first month.
+      read_guidelines:
+        name:
+          other: Read Guidelines
+        desc:
+          other: Read the [community guidelines].
+      reader:
+        name:
+          other: Reader
+        desc:
+          other: Read every answers in a topic with more than 10 answers.
+      welcome:
+        name:
+          other: Welcome
+        desc:
+          other: Received a up vote.
+      nice_share:
+        name:
+          other: Nice Share
+        desc:
+          other: Shared a post with 25 unique visitors.
+      good_share:
+        name:
+          other: Good Share
+        desc:
+          other: Shared a post with 300 unique visitors.
+      great_share:
+        name:
+          other: Great Share
+        desc:
+          other: Shared a post with 1000 unique visitors.
+      out_of_love:
+        name:
+          other: Out of Love
+        desc:
+          other: Used 50 up votes in a day.
+      higher_love:
+        name:
+          other: Higher Love
+        desc:
+          other: Used 50 up votes in a day 5 times.
+      crazy_in_love:
+        name:
+          other: Crazy in Love
+        desc:
+          other: Used 50 up votes in a day 20 times.
+      promoter:
+        name:
+          other: Promoter
+        desc:
+          other: Invited a user.
+      campaigner:
+        name:
+          other: Campaigner
+        desc:
+          other: Invited 3 basic users.
+      champion:
+        name:
+          other: Champion
+        desc:
+          other: Invited 5 members.
+      thank_you:
+        name:
+          other: Thank You
+        desc:
+          other: Has 20 up voted posts and gave 10 up votes.
+      gives_back:
+        name:
+          other: Gives Back
+        desc:
+          other: Has 100 up voted posts and gave 100 up votes.
+      empathetic:
+        name:
+          other: Empathetic
+        desc:
+          other: Has 500 up voted posts and gave 1000 up votes.
+      enthusiast:
+        name:
+          other: Enthusiast
+        desc:
+          other: Visited 10 consecutive days.
+      aficionado:
+        name:
+          other: Aficionado
+        desc:
+          other: Visited 100 consecutive days.
+      devotee:
+        name:
+          other: Devotee
+        desc:
+          other: Visited 365 consecutive days.
+      anniversary:
+        name:
+          other: Anniversary
+        desc:
+          other: Active member for a year, posted at least once.
+      appreciated:
+        name:
+          other: Appreciated
+        desc:
+          other: Received 1 up vote on 20 posts.
+      respected:
+        name:
+          other: Respected
+        desc:
+          other: Received 2 up votes on 100 posts.
+      admired:
+        name:
+          other: Admired
+        desc:
+          other: Received 5 up votes on 300 posts.
+      solved:
+        name:
+          other: Solved
+        desc:
+          other: Have an answer be accepted.
+      guidance_counsellor:
+        name:
+          other: Guidance Counsellor
+        desc:
+          other: Have 10 answers be accepted.
+      know_it_all:
+        name:
+          other: Know-it-All
+        desc:
+          other: Have 50 answers be accepted.
+      solution_institution:
+        name:
+          other: Solution Institution
+        desc:
+          other: Have 150 answers be accepted.
+      nice_answer:
+        name:
+          other: Nice Answer
+        desc:
+          other: Answer score of 10 or more.
+      good_answer:
+        name:
+          other: Good Answer
+        desc:
+          other: Answer score of 25 or more.
+      great_answer:
+        name:
+          other: Great Answer
+        desc:
+          other: Answer score of 50 or more.
+      nice_question:
+        name:
+          other: Nice Question
+        desc:
+          other: Question score of 10 or more.
+      good_question:
+        name:
+          other: Good Question
+        desc:
+          other: Question score of 25 or more.
+      great_question:
+        name:
+          other: Great Question
+        desc:
+          other: Question score of 50 or more.
+      popular_question:
+        name:
+          other: Popular Question
+        desc:
+          other: Question with 500 views.
+      notable_question:
+        name:
+          other: Notable Question
+        desc:
+          other: Question with 1,000 views.
+      famous_question:
+        name:
+          other: Famous Question
+        desc:
+          other: Question with 5,000 views.
+      popular_link:
+        name:
+          other: Popular Link
+        desc:
+          other: Posted an external link with 50 clicks.
+      hot_link:
+        name:
+          other: Hot Link
+        desc:
+          other: Posted an external link with 300 clicks.
+      famous_link:
+        name:
+          other: Famous Link
+        desc:
+          other: Posted an external link with 100 clicks.
+    default_badge_groups:
+      getting_started:
+        name:
+          other: Getting Started
+      community:
+        name:
+          other: Community
+      posting:
+        name:
+          other: Posting
 # The following fields are used for interface presentation(Front-end)
 ui:
   how_to_format:
@@ -572,6 +843,9 @@ ui:
       posts: Beiträge
       invites: Einladungen
       votes: Abstimmungen
+    answer: Answer
+    question: Question
+    badge_award: Badge
   suspended:
     title: Dein Konto wurde gesperrt
     until_time: "Dein Konto wurde bis zum {{ time }} gesperrt."
@@ -743,9 +1017,9 @@ ui:
     delete:
       title: Diesen Tag löschen
       tip_with_posts: >-
-        <p>Wir erlauben das <strong>Löschen von Tags mit Beiträgen</strong> nicht.</p> <p>Bitte entferne dieses Tag zuerst aus den Beiträgen.</p>
+        <p>We do not allow <strong>deleting tag with posts</strong>.</p> <p>Please remove this tag from the posts first.</p>
       tip_with_synonyms: >-
-        <p>Wir erlauben das <strong>Löschen von Tags mit Synonymen</strong> nicht.</p> <p>Bitte entferne zuerst die Synonyme aus diesem Tag.</p>
+        <p>We do not allow <strong>deleting tag with synonyms</strong>.</p> <p>Please remove the synonyms from this tag first.</p>
       tip: Bist du sicher, dass du löschen möchtest?
       close: Schließen
   edit_tag:
@@ -767,12 +1041,12 @@ ui:
     hours: Stunden
     days: Tage
   reaction:
-    heart: heart
-    smile: smile
+    heart: Herz
+    smile: Lächeln
     frown: frown
-    btn_label: add or remove reactions
-    undo_emoji: undo {{ emoji }} reaction
-    react_emoji: react with {{ emoji }}
+    btn_label: Reaktionen hinzufügen oder entfernen
+    undo_emoji: '{{ emoji }} Reaktion rückgängig machen'
+    react_emoji: mit {{ emoji }} reagieren
     unreact_emoji: unreact with {{ emoji }}
   comment:
     btn_add_comment: Einen Kommentar hinzufügen
@@ -808,7 +1082,7 @@ ui:
     btn_save_edits: Änderungen speichern
     btn_cancel: Abbrechen
   tags:
-    title: Tags
+    title: Schlagwörter
     sort_buttons:
       popular: Beliebt
       name: Name
@@ -867,6 +1141,7 @@ ui:
       question: Fragen
       tag: Schlagwörter
       user: Benutzer
+      badges: Badges
       profile: Profil
       setting: Einstellungen
       logout: Ausloggen
@@ -910,8 +1185,8 @@ ui:
       label: Name
       msg:
         empty: Der Name darf nicht leer sein.
-        range: Length of name should between 4 to 30 characters.
-        character: 'Must use the character set "a-z", "A-Z", "0-9", " - . _"'
+        range: Die Länge des Namens sollte zwischen 4 und 30 Zeichen liegen.
+        character: 'Muss den Zeichensatz "a-z", "A-Z", "0-9", " - . _" verwenden'
     email:
       label: E-Mail
       msg:
@@ -1125,8 +1400,8 @@ ui:
       title: Diesen Beitrag auflisten
       content: Are you sure you want to list?
     unlist:
-      confirm_btn: Unlist
-      title: Unlist this post
+      confirm_btn: Von Liste nehmen
+      title: Diesen Beitrag von der Liste nehmen
       content: Are you sure you want to unlist?
     pin:
       title: Diesen Beitrag anpinnen
@@ -1149,7 +1424,7 @@ ui:
     save: Speichern
     delete: Löschen
     undelete: Wiederherstellen
-    list: List
+    list: Liste
     unlist: Unlist
     unlisted: Unlisted
     login: Einloggen
@@ -1174,7 +1449,7 @@ ui:
     unsuspend: Entsperren
     close: Schließen
     reopen: Wieder öffnen
-    ok: OK
+    ok: Okay
     light: Hell
     dark: Dunkel
     system_setting: System-Einstellung
@@ -1184,11 +1459,11 @@ ui:
     post_lowercase: post
     filter: Filter
     ignore: Ignore
-    submit: Submit
+    submit: Absenden
     normal: Normal
-    closed: Closed
-    deleted: Deleted
-    pending: Pending
+    closed: Geschlossen
+    deleted: Gelöscht
+    pending: Ausstehend
     more: More
   search:
     title: Suchergebnisse
@@ -1226,8 +1501,8 @@ ui:
   account_result:
     success: Dein neues Konto ist bestätigt; du wirst zur Startseite weitergeleitet.
     link: Weiter zur Startseite
-    invalid: >-
-      Entschuldige, dieser Link zur Aktivierung des Benutzerkontos ist nicht länger gültig. Ist Dein Konto schon aktiviert?
+    oops: Oops!
+    invalid: The link you used no longer works.
     confirm_new_email: Deine E-Mail wurde aktualisiert.
     confirm_new_email_invalid: >-
       Dieser Bestätigungslink ist leider nicht mehr gültig. Vielleicht wurde deine E-Mail-Adresse bereits geändert?
@@ -1249,7 +1524,8 @@ ui:
     answers: Antworten
     newest: Neueste
     active: Aktiv
-    frequent: Häufig
+    hot: Hot
+    recommend: Recommend
     score: Punktzahl
     unanswered: Unbeantwortet
     modified: geändert
@@ -1268,12 +1544,14 @@ ui:
     reputation: Ansehen
     comments: Kommentare
     votes: Stimmen
+    badges: Badges
     newest: Neueste
     score: Punktzahl
     edit_profile: Profil bearbeiten
     visited_x_days: "{{ count }} Tage besucht"
     viewed: Gesehen
     joined: Beigetreten
+    comma: ","
     last_login: Gesehen
     about_me: Über mich
     about_me_empty: "// Hallo Welt !"
@@ -1291,6 +1569,7 @@ ui:
     x_votes: Stimmen erhalten
     x_answers: Antworten
     x_questions: Fragen
+    recent_badges: Recent Badges
   install:
     title: Installation
     next: Nächste
@@ -1314,7 +1593,7 @@ ui:
       msg: Datenbank-Host darf nicht leer sein.
     db_name:
       label: Datenbankname
-      placeholder: answer
+      placeholder: antworten
       msg: Der Datenbankname darf nicht leer sein.
     db_file:
       label: Datenbank-Datei
@@ -1367,7 +1646,7 @@ ui:
       msg:
         empty: E-Mail darf nicht leer sein.
         incorrect: E-Mail falsches Format.
-    ready_title: Your site is ready
+    ready_title: Ihre Seite ist bereit
     ready_desc: >-
       Wenn du noch mehr Einstellungen ändern möchtest, besuche den <1>Admin-Bereich</1>; du findest ihn im Seitenmenü.
     good_luck: "Viel Spaß und viel Glück!"
@@ -1400,6 +1679,7 @@ ui:
     questions: Fragen
     answers: Antworten
     users: Benutzer
+    badges: Badges
     flags: Meldungen
     settings: Einstellungen
     general: Allgemein
@@ -1416,19 +1696,31 @@ ui:
     css_html: CSS/HTML
     login: Anmeldung
     privileges: Berechtigungen
-    plugins: Plugins
+    plugins: Erweiterungen (Plugins)
     installed_plugins: Installierte Plugins
   website_welcome: Willkommen auf {{site_name}}
   user_center:
     login: Anmelden
     qrcode_login_tip: Bitte verwende {{ agentName }}, um den QR-Code zu scannen und dich einzuloggen.
     login_failed_email_tip: Anmeldung ist fehlgeschlagen. Bitte erlaube dieser App, auf deine E-Mail-Informationen zuzugreifen, bevor du es erneut versuchst.
+  badges:
+    modal:
+      title: Congratulations
+      content: You've earned a new badge.
+      close: Close
+      confirm: View badges
+    title: Badges
+    awarded: Awarded
+    earned_×: Earned ×{{ number }}
+    ×_awarded: "{{ number }} awarded"
+    can_earn_multiple: You can earn this multiple times.
+    earned: Earned
   admin:
     admin_header:
       title: Administrator
     dashboard:
       title: Dashboard
-      welcome: Welcome to Admin!
+      welcome: Willkommen im Admin Bereich!
       site_statistics: Website-Statistiken
       questions: "Fragen:"
       answers: "Antworten:"
@@ -1446,7 +1738,7 @@ ui:
       public: Öffentlich
       smtp: "SMTP:"
       timezone: "Zeitzone:"
-      system_info: System info
+      system_info: Systeminformationen
       go_version: "Go Version:"
       database: "Datenbank:"
       database_size: "Datenbankgröße:"
@@ -1498,17 +1790,20 @@ ui:
       btn_cancel: Abbrechen
       btn_submit: Senden
     edit_profile_modal:
-      title: Edit profile
+      title: Profil bearbeiten
       form:
         fields:
+          display_name:
+            label: Display name
+            msg_range: Display name up to 30 characters.
           username:
-            label: Username
-            msg_range: Username up to 30 characters.
+            label: Nutzername
+            msg_range: Nutzername bis zu 30 Zeichen.
           email:
-            label: Email
-            msg_invalid: Invalid Email Address.
-      edit_success: Edited successfully
-      btn_cancel: Cancel
+            label: E-Mail
+            msg_invalid: Ungültige E-Mail-Adresse.
+      edit_success: Erfolgreich bearbeitet
+      btn_cancel: Abbrechen
       btn_submit: Submit
     user_modal:
       title: Neuen Benutzer hinzufügen
@@ -1555,7 +1850,7 @@ ui:
       filter:
         placeholder: "Nach Namen, user:id filtern"
       set_new_password: Neues Passwort festlegen
-      edit_profile: Edit profile
+      edit_profile: Profil bearbeiten
       change_status: Status ändern
       change_role: Rolle wechseln
       show_logs: Protokolle anzeigen
@@ -1574,7 +1869,7 @@ ui:
         content: Ein gesperrter Benutzer kann sich nicht einloggen.
     questions:
       page_title: Fragen
-      unlisted: Unlisted
+      unlisted: Nicht gelistet
       post: Beitrag
       votes: Stimmen
       answers: Antworten
@@ -1620,7 +1915,7 @@ ui:
         validate: Kontakt-E-Mail ist ungültig.
         text: E-Mail-Adresse des Hauptkontakts, der für diese Website verantwortlich ist.
       check_update:
-        label: Software updates
+        label: Softwareaktualisierungen
         text: Automatically check for updates
     interface:
       page_title: Benutzeroberfläche
@@ -1700,19 +1995,21 @@ ui:
     write:
       page_title: Schreiben
       restrict_answer:
-        title: Antwort einschränken
+        title: Answer write
         label: Jeder Benutzer kann für jede Frage nur eine Antwort schreiben
-        text: "Sie können den Bearbeiten-Link verwenden, um ihre bestehende Antwort zu verfeinern und zu verbessern."
+        text: "Turn off to allow users to write multiple answers to the same question, which may cause answers to be unfocused."
       recommend_tags:
         label: Empfohlene Tags
-        text: "Bitte gib den Tag-Slug oben ein, ein Tag pro Zeile."
+        text: "Recommend tags will show in the dropdown list by default."
+        msg:
+          contain_reserved: "recommended tags cannot contain reserved tags"
       required_tag:
-        title: Erforderlicher Tag
-        label: Setze den Empfehlungs-Tag wie gewünscht
+        title: Set required tags
+        label: Set “Recommend tags” as required tags
         text: "Jede neue Frage muss mindestens ein Empfehlungs-Tag haben."
       reserved_tags:
         label: Reservierte Tags
-        text: "Reservierte Tags können nur vom Moderator zu einem Beitrag hinzugefügt werden."
+        text: "Reserved tags can only be used by moderator."
     seo:
       page_title: SEO
       permalink:
@@ -1776,7 +2073,7 @@ ui:
         text: "WARNUNG: Wenn du diese Option abschaltest, kannst du dich möglicherweise nicht mehr anmelden, wenn du zuvor keine andere Anmeldemethode konfiguriert hast."
     installed_plugins:
       title: Installierte Plugins
-      plugin_link: Plugins extend and expand the functionality. You may find plugins in the <1>Plugin Repository</1>.
+      plugin_link: Plugins erweitern und ergänzen die Funktionalität. Du kannst Plugins im <1>Pluginverzeichnis</1> finden.
       filter:
         all: Alle
         active: Aktiv
@@ -1822,6 +2119,21 @@ ui:
       msg:
         should_be_number: the input should be number
         number_larger_1: number should be equal or larger than 1
+    badges:
+      action: Action
+      active: Active
+      activate: Activate
+      all: All
+      awards: Awards
+      deactivate: Deactivate
+      filter:
+        placeholder: Filter by name, badge:id
+      group: Group
+      inactive: Inactive
+      name: Name
+      show_logs: Show logs
+      status: Status
+      title: Badges
   form:
     optional: (optional)
     empty: kann nicht leer sein
@@ -1845,15 +2157,15 @@ ui:
     approve_post_tip: Do you approve this post?
     approve_user_tip: Do you approve this user?
     suggest_edits: Suggested edits
-    flag_post: Flag post
-    flag_user: Flag user
-    queued_post: Queued post
-    queued_user: Queued user
-    filter_label: Type
-    reputation: reputation
+    flag_post: Beitrag melden
+    flag_user: Nutzer melden
+    queued_post: Beitrag in Warteschlange
+    queued_user: Benutzer in der Warteschlange
+    filter_label: Typ
+    reputation: ansehen
     flag_post_type: Flagged this post as {{ type }}.
     flag_user_type: Flagged this user as {{ type }}.
-    edit_post: Edit post
+    edit_post: Beitrag bearbeiten
     list_post: List post
     unlist_post: Unlist post
   timeline:

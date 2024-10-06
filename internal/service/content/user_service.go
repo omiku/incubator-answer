@@ -23,6 +23,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/apache/incubator-answer/internal/service/event_queue"
 	"time"
 
 	"github.com/apache/incubator-answer/internal/base/constant"
@@ -65,6 +66,7 @@ type UserService struct {
 	userNotificationConfigRepo    user_notification_config.UserNotificationConfigRepo
 	userNotificationConfigService *user_notification_config.UserNotificationConfigService
 	questionService               *questioncommon.QuestionCommon
+	eventQueueService             event_queue.EventQueueService
 }
 
 func NewUserService(userRepo usercommon.UserRepo,
@@ -79,6 +81,7 @@ func NewUserService(userRepo usercommon.UserRepo,
 	userNotificationConfigRepo user_notification_config.UserNotificationConfigRepo,
 	userNotificationConfigService *user_notification_config.UserNotificationConfigService,
 	questionService *questioncommon.QuestionCommon,
+	eventQueueService event_queue.EventQueueService,
 ) *UserService {
 	return &UserService{
 		userCommonService:             userCommonService,
@@ -93,6 +96,7 @@ func NewUserService(userRepo usercommon.UserRepo,
 		userNotificationConfigRepo:    userNotificationConfigRepo,
 		userNotificationConfigService: userNotificationConfigService,
 		questionService:               questionService,
+		eventQueueService:             eventQueueService,
 	}
 }
 
@@ -227,7 +231,7 @@ func (us *UserService) RetrievePassWord(ctx context.Context, req *schema.UserRet
 	if err != nil {
 		return err
 	}
-	go us.emailService.SendAndSaveCode(ctx, req.Email, title, body, code, data.ToJSONString())
+	go us.emailService.SendAndSaveCode(ctx, userInfo.ID, req.Email, title, body, code, data.ToJSONString())
 	return nil
 }
 
@@ -352,6 +356,10 @@ func (us *UserService) UpdateInfo(ctx context.Context, req *schema.UpdateInfoReq
 
 	cond := us.formatUserInfoForUpdateInfo(oldUserInfo, req, siteUsers)
 	err = us.userRepo.UpdateInfo(ctx, cond)
+	if err != nil {
+		return nil, err
+	}
+	us.eventQueueService.Send(ctx, schema.NewEvent(constant.EventUserUpdate, req.UserID))
 	return nil, err
 }
 
@@ -450,7 +458,7 @@ func (us *UserService) UserRegisterByEmail(ctx context.Context, registerUserInfo
 	if err != nil {
 		return nil, nil, err
 	}
-	go us.emailService.SendAndSaveCode(ctx, userInfo.EMail, title, body, code, data.ToJSONString())
+	go us.emailService.SendAndSaveCode(ctx, userInfo.ID, userInfo.EMail, title, body, code, data.ToJSONString())
 
 	roleID, err := us.userRoleService.GetUserRole(ctx, userInfo.ID)
 	if err != nil {
@@ -500,7 +508,7 @@ func (us *UserService) UserVerifyEmailSend(ctx context.Context, userID string) e
 	if err != nil {
 		return err
 	}
-	go us.emailService.SendAndSaveCode(ctx, userInfo.EMail, title, body, code, data.ToJSONString())
+	go us.emailService.SendAndSaveCode(ctx, userInfo.ID, userInfo.EMail, title, body, code, data.ToJSONString())
 	return nil
 }
 
@@ -527,6 +535,7 @@ func (us *UserService) UserVerifyEmail(ctx context.Context, req *schema.UserVeri
 	}
 	if err = us.userActivity.UserActive(ctx, userInfo.ID); err != nil {
 		log.Error(err)
+		return nil, err
 	}
 
 	// In the case of three-party login, the associated users are bound
@@ -621,7 +630,7 @@ func (us *UserService) UserChangeEmailSendCode(ctx context.Context, req *schema.
 	}
 	log.Infof("send email confirmation %s", verifyEmailURL)
 
-	go us.emailService.SendAndSaveCode(ctx, req.Email, title, body, code, data.ToJSONString())
+	go us.emailService.SendAndSaveCode(ctx, userInfo.ID, req.Email, title, body, code, data.ToJSONString())
 	return nil, nil
 }
 
@@ -660,6 +669,7 @@ func (us *UserService) UserChangeEmailVerify(ctx context.Context, content string
 	if userInfo.MailStatus == entity.EmailStatusToBeVerified {
 		if err = us.userActivity.UserActive(ctx, userInfo.ID); err != nil {
 			log.Error(err)
+			return nil, err
 		}
 	}
 

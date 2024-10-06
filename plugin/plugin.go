@@ -102,6 +102,14 @@ func Register(p Base) {
 	if _, ok := p.(Embed); ok {
 		registerEmbed(p.(Embed))
 	}
+
+	if _, ok := p.(Render); ok {
+		registerRender(p.(Render))
+	}
+
+	if _, ok := p.(CDN); ok {
+		registerCDN(p.(CDN))
+	}
 }
 
 type Stack[T Base] struct {
@@ -159,7 +167,12 @@ func (m *statusManager) Enable(name string, enabled bool) {
 		return
 	}
 	m.status[name] = enabled
+
 	for _, slugName := range coordinatedCaptchaPlugins(name) {
+		m.status[slugName] = false
+	}
+
+	for _, slugName := range coordinatedCDNPlugins(name) {
 		m.status[slugName] = false
 	}
 }
@@ -210,7 +223,7 @@ func MakeTranslator(key string) Translator {
 
 // Translate translates the key to the current language of the context
 func (t Translator) Translate(ctx *GinContext) string {
-	if &t == nil || t.Fn == nil {
+	if t.Fn == nil {
 		return ""
 	}
 	return t.Fn(ctx)
