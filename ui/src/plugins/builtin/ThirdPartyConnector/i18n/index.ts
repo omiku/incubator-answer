@@ -26,4 +26,5 @@ import zh_TW from './zh_TW.yaml';
 initI18nResource({
   en_US,
   zh_CN,
+  zh_TW,
 });
